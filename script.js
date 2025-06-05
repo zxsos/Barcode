@@ -4,63 +4,30 @@ function addInputEffects() {
     const digitCounter = document.getElementById('digitCounter');
     const digitStatus = document.getElementById('digitStatus');
     const generateBtn = document.querySelector('button[onclick="generateBarcode()"]');
-    
-    // 格式化输入值（保留空格但限制为20个数字）
+      // 格式化输入值（保留空格，不限制数字长度）
     function formatInput(value) {
         // 移除所有非数字和非空格字符
-        let cleaned = value.replace(/[^\d\s]/g, '');
-        // 只保留数字来计算长度
-        let digitsOnly = cleaned.replace(/\s/g, '');
-        
-        // 如果数字超过20位，截取前20位并保持原有空格分布
-        if (digitsOnly.length > 20) {
-            let result = '';
-            let digitCount = 0;
-            for (let char of cleaned) {
-                if (/\d/.test(char)) {
-                    if (digitCount < 20) {
-                        result += char;
-                        digitCount++;
-                    }
-                } else if (char === ' ' && digitCount < 20) {
-                    result += char;
-                }
-            }
-            return result;
-        }
-        
-        return cleaned;
+        return value.replace(/[^\d\s]/g, '');
     }
-    
-    // 更新数字计数和状态
+      // 更新数字计数和状态
     function updateDigitCount() {
         const digitsOnly = input.value.replace(/\D/g, ''); // 只保留数字
         const count = digitsOnly.length;
         
         // 更新计数显示
-        digitCounter.textContent = `${count}/20`;
+        digitCounter.textContent = `${count}位数字`;
         
         // 更新状态和按钮
         if (count === 0) {
-            digitStatus.textContent = '需要输入20位数字';
+            digitStatus.textContent = '请输入数字';
             digitStatus.className = 'text-sm text-gray-500';
             generateBtn.disabled = true;
             generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        } else if (count < 20) {
-            digitStatus.textContent = `还需要${20 - count}位数字`;
-            digitStatus.className = 'text-sm text-orange-500';
-            generateBtn.disabled = true;
-            generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        } else if (count === 20) {
+        } else {
             digitStatus.textContent = '可以生成条形码';
             digitStatus.className = 'text-sm text-green-500';
             generateBtn.disabled = false;
             generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        } else if (count > 20) {
-            digitStatus.textContent = '数字超过20位，已自动截取';
-            digitStatus.className = 'text-sm text-orange-500';
-            generateBtn.disabled = true;
-            generateBtn.classList.add('opacity-50', 'cursor-not-allowed');
         }
     }
     
@@ -371,17 +338,10 @@ function generateBarcode() {
         return;
     }
     
-    if (input.length !== 20) {
-        shakeElement(inputElement);
-        showToast(`请输入20位数字！当前输入了${input.length}位`, 'error');
-        inputElement.focus();
-        return;
-    }
-    
     // 添加加载动画
     if (generateBtn) {
         applyLoadingEffect(generateBtn);
-    }    try {
+    }try {
         // 获取自定义颜色
         const barcodeColor = document.getElementById('barcodeColor').value;
         const backgroundColor = document.getElementById('backgroundColor').value;
@@ -436,17 +396,16 @@ function downloadBarcode() {
     applyLoadingEffect(downloadBtn);
 
     // 模拟下载处理时间
-    setTimeout(() => {
-        const link = document.createElement('a');
-        // 使用输入的20位数字作为文件名
-        link.download = `${input}.png`;
+    setTimeout(() => {        const link = document.createElement('a');
+        // 使用输入的数字作为文件名
+        link.download = `barcode_${input}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
         
         // 移除加载效果并显示成功特效
         removeLoadingEffect(downloadBtn);
         showSuccessEffect(downloadBtn);
-        showToast(`条形码已下载为：${input}.png`, 'success');
+        showToast(`条形码已下载为：barcode_${input}.png`, 'success');
     }, 500);
 }
 
