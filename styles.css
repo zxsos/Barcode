@@ -1,0 +1,527 @@
+/* 自定义样式 */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 黑夜模式样式 */
+.dark {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #3a3a3a;
+    --text-primary: #ffffff;
+    --text-secondary: #d1d5db;
+    --text-muted: #9ca3af;
+    --border-color: #4b5563;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary);
+}
+
+.dark .bg-white {
+    background-color: var(--bg-secondary) !important;
+}
+
+.dark .bg-gray-100 {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.dark .bg-gray-50 {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.dark .text-gray-800 {
+    color: var(--text-primary) !important;
+}
+
+.dark .text-gray-700 {
+    color: var(--text-secondary) !important;
+}
+
+.dark .text-gray-500 {
+    color: var(--text-muted) !important;
+}
+
+.dark .border-gray-300 {
+    border-color: var(--border-color) !important;
+}
+
+.dark .border-gray-200 {
+    border-color: var(--border-color) !important;
+}
+
+.dark .shadow-lg {
+    box-shadow: var(--shadow) !important;
+}
+
+.dark input {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.dark input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.dark input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+}
+
+.dark canvas {
+    background-color: white !important;
+}
+
+/* 黑夜模式切换按钮 */
+.dark #darkModeToggle {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+}
+
+.dark #darkModeToggle:hover {
+    background-color: var(--bg-secondary) !important;
+}
+
+/* 历史记录项在黑夜模式下的样式 */
+.dark .history-item {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.dark .history-item:hover {
+    background-color: var(--bg-secondary) !important;
+}
+
+#barcodeCanvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 输入框动画效果 */
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: scale(1.02);
+}
+
+input {
+    transition: all 0.2s ease;
+}
+
+/* 输入框输入时的特效 */
+.input-typing {
+    animation: typingPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes typingPulse {
+    0% { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    100% { box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); }
+}
+
+/* 点击特效相关样式 */
+.click-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* 按钮悬停和按下效果 */
+button {
+    transform: translateY(0);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    transition: all 0.1s ease;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* 成功生成动画 */
+.success-flash {
+    animation: successFlash 0.5s ease-in-out;
+}
+
+@keyframes successFlash {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(34, 197, 94, 0.2); }
+    100% { background-color: transparent; }
+}
+
+/* 历史记录项点击效果 */
+.history-item {
+    transition: all 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateX(5px);
+    background-color: rgba(59, 130, 246, 0.05) !important;
+}
+
+.history-item:active {
+    transform: translateX(3px) scale(0.98);
+}
+
+/* 脉冲效果 */
+.pulse-effect {
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* 加载效果 - 呼吸脉冲 */
+.loading-pulse {
+    animation: breathe 1.5s ease-in-out infinite;
+    position: relative;
+}
+
+@keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* 震动动画 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* 提示信息特效 */
+.toast-effect {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    animation: slideInRight 0.3s ease-out, fadeOut 0.3s ease-in 2.7s forwards;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* 颜色设置折叠动画 */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        max-height: 200px;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        max-height: 200px;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* 打印样式 */
+@media print {
+    body > *:not(#printArea) {
+        display: none !important;
+    }
+
+    #printArea {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }    .print-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        min-height: 100vh;
+        padding: 10mm;
+        page-break-inside: avoid;
+    }
+
+    /* 小尺寸条形码紧凑布局 */
+    .print-content.compact {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 5mm;
+        align-items: start;
+        justify-content: start;
+        padding: 5mm;
+    }
+
+    /* 中等尺寸条形码网格布局 */
+    .print-content.grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10mm;
+        align-items: start;
+        justify-content: start;
+        padding: 10mm;
+    }
+
+    /* 大尺寸条形码列表布局 */
+    .print-content.list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15mm;
+        padding: 15mm;
+    }
+
+    .barcode-container {
+        text-align: center;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        width: 100%;
+    }
+
+    .barcode-container.compact {
+        margin: 2mm 0;
+    }
+
+    .barcode-container.standard {
+        margin: 5mm 0;
+    }
+
+    .barcode-container.large {
+        margin: 10mm 0;
+    }
+
+    .barcode-number {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        margin-top: 2mm;
+    }
+
+    .barcode-number.compact {
+        font-size: 12px;
+        margin-top: 1mm;
+    }
+
+    .barcode-number.standard {
+        font-size: 16px;
+        margin-top: 2mm;
+    }
+
+    .barcode-number.large {
+        font-size: 20px;
+        margin-top: 3mm;
+    }
+
+    .print-barcode-canvas {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    @page {
+        margin: 20mm;
+        size: A4;
+    }
+
+    /* 针对小尺寸条形码的页面优化 */
+    @page compact {
+        margin: 10mm;
+        size: A4;
+    }
+
+    .print-content.compact {
+        page: compact;
+    }
+
+    /* 响应式打印布局 */
+    @media print and (max-width: 8.5in) {
+        .print-content.compact {
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 3mm;
+            padding: 5mm;
+        }
+        
+        .barcode-container.compact {
+            margin: 1mm 0;
+        }
+        
+        .barcode-number.compact {
+            font-size: 10px;
+        }
+    }
+
+    /* 横向打印优化 */
+    @media print and (orientation: landscape) {
+        .print-content.compact {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 2mm;
+        }
+    }
+}
+
+/* 模态对话框样式 */
+#printModal {
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+#printModal.hidden {
+    animation: fadeOut 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* 打印模态对话框在黑夜模式下的样式 */
+.dark #printModal .bg-white {
+    background-color: var(--bg-secondary) !important;
+}
+
+.dark #printModal .text-gray-800 {
+    color: var(--text-primary) !important;
+}
+
+.dark #printModal .text-gray-700 {
+    color: var(--text-secondary) !important;
+}
+
+.dark #printModal .text-gray-600 {
+    color: var(--text-muted) !important;
+}
+
+.dark #printModal .bg-gray-50 {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.dark #printModal .bg-gray-200 {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.dark #printModal .bg-gray-100 {
+    background-color: var(--bg-tertiary) !important;
+}
+
+.dark #printModal select,
+.dark #printModal input {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* 快捷键提示样式 */
+.dark #printModal kbd {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.dark #printModal .border-gray-200 {
+    border-color: var(--border-color) !important;
+}
+
+.dark #printModal .text-gray-500 {
+    color: var(--text-muted) !important;
+}
+
+/* 小型预览画布样式 */
+#miniPreviewCanvas {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+#miniPreviewCanvas:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* 预设按钮样式 */
+.click-effect[onclick^="applyPrintPreset"] {
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.click-effect[onclick^="applyPrintPreset"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.click-effect[onclick^="applyPrintPreset"].bg-blue-100 {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem;
+    }
+}

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条形码生成器</title>
+    <link href="lib/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- 黑夜模式切换按钮 -->
+            <div class="flex justify-end mb-4">
+                <button id="darkModeToggle"
+                    class="click-effect flex items-center space-x-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200">
+                    <span id="darkModeIcon">🌙</span>
+                    <span id="darkModeText">黑夜模式</span>
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6 transition-colors duration-300">
+                <h1 class="text-2xl font-bold text-center text-gray-800 mb-6 transition-colors duration-300">条形码生成器</h1>
+                <div class="mb-6">
+                    <label for="barcodeInput"
+                        class="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-300">输入数字</label>
+                    <input type="text" id="barcodeInput"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 transition-colors duration-300"
+                        placeholder="请输入20位数字（支持粘贴）">
+                    <div class="flex justify-between items-center mt-2">
+                        <span id="digitCounter" class="text-sm text-gray-500 transition-colors duration-300">0/20</span>
+                        <span id="digitStatus"
+                            class="text-sm text-red-500 transition-colors duration-300">需要输入20位数字</span>
+                    </div>
+                </div> <!-- 颜色自定义选项 -->
+                <div class="mb-6">
+                    <button type="button" onclick="toggleColorSettings()"
+                        class="click-effect flex items-center justify-between w-full text-left text-sm font-medium text-gray-700 mb-3 transition-colors duration-300 hover:text-gray-900">
+                        <span>条形码颜色设置</span>
+                        <span id="colorToggleIcon"
+                            class="text-gray-500 transform transition-transform duration-200">▼</span>
+                    </button>
+                    <div id="colorSettings" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="barcodeColor"
+                                    class="block text-xs text-gray-600 mb-1 transition-colors duration-300">条形码颜色</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="color" id="barcodeColor" value="#000000"
+                                        class="w-12 h-10 border border-gray-300 rounded cursor-pointer">
+                                    <span id="barcodeColorValue" class="text-sm text-gray-600 font-mono">#000000</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="backgroundColor"
+                                    class="block text-xs text-gray-600 mb-1 transition-colors duration-300">背景颜色</label>
+                                <div class="flex items-center space-x-2">
+                                    <input type="color" id="backgroundColor" value="#ffffff"
+                                        class="w-12 h-10 border border-gray-300 rounded cursor-pointer">
+                                    <span id="backgroundColorValue"
+                                        class="text-sm text-gray-600 font-mono">#ffffff</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 预设颜色 -->
+                        <div class="mt-3">
+                            <label class="block text-xs text-gray-600 mb-2 transition-colors duration-300">预设方案</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="applyColorPreset('#000000', '#ffffff')"
+                                    class="click-effect w-8 h-8 rounded border-2 border-gray-300 bg-white relative">
+                                    <div class="absolute inset-1 bg-black rounded-sm"></div>
+                                </button>
+                                <button type="button" onclick="applyColorPreset('#1e40af', '#ffffff')"
+                                    class="click-effect w-8 h-8 rounded border-2 border-gray-300 bg-white relative">
+                                    <div class="absolute inset-1 bg-blue-700 rounded-sm"></div>
+                                </button>
+                                <button type="button" onclick="applyColorPreset('#dc2626', '#ffffff')"
+                                    class="click-effect w-8 h-8 rounded border-2 border-gray-300 bg-white relative">
+                                    <div class="absolute inset-1 bg-red-600 rounded-sm"></div>
+                                </button>
+                                <button type="button" onclick="applyColorPreset('#16a34a', '#ffffff')"
+                                    class="click-effect w-8 h-8 rounded border-2 border-gray-300 bg-white relative">
+                                    <div class="absolute inset-1 bg-green-600 rounded-sm"></div>
+                                </button>
+                                <button type="button" onclick="applyColorPreset('#ffffff', '#000000')"
+                                    class="click-effect w-8 h-8 rounded border-2 border-gray-300 bg-black relative">
+                                    <div class="absolute inset-1 bg-white rounded-sm"></div>
+                                </button>
+                                <button type="button" onclick="applyColorPreset('#7c3aed', '#f3f4f6')"
+                                    class="click-effect w-8 h-8 rounded border-2 border-gray-300 bg-gray-100 relative">
+                                    <div class="absolute inset-1 bg-purple-600 rounded-sm"></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div><button onclick="generateBarcode()"
+                    class="click-effect w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200">
+                    生成条形码
+                </button>
+
+                <div class="mt-6">
+                    <div id="barcodeContainer" class="flex justify-center">
+                        <canvas id="barcodeCanvas" class="border border-gray-200 p-4 bg-white"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 text-center space-x-4">
+                    <button onclick="downloadBarcode()"
+                        class="click-effect bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">
+                        下载条形码
+                    </button>
+                    <button onclick="printBarcode()"
+                        class="click-effect bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition duration-200">
+                        打印条形码
+                    </button>
+                </div>
+            </div> <!-- 历史记录区域 -->
+            <div class="bg-white rounded-lg shadow-lg p-6 transition-colors duration-300">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 transition-colors duration-300">历史记录</h2> <button
+                        onclick="clearHistory()"
+                        class="click-effect text-sm text-red-500 hover:text-red-600 transition duration-200">
+                        清除历史
+                    </button>
+                </div>
+                <div id="historyList" class="space-y-4">
+                    <!-- 历史记录将通过JavaScript动态添加 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 打印模板 -->
+    <div id="printArea" style="display: none;">
+        <div class="print-content">
+            <div class="barcode-container">
+                <canvas id="printCanvas"></canvas>
+            </div>
+            <div class="barcode-number"></div>
+        </div>
+    </div>
+
+    <!-- 打印设置模态对话框 -->
+    <div id="printModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4 transition-colors duration-300">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 transition-colors duration-300">打印设置</h3>
+
+            <!-- 条形码尺寸设置 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-300">条形码尺寸</label>
+
+                <!-- 快速预设 -->
+                <div class="mb-3">
+                    <label class="block text-xs text-gray-600 mb-1">常用预设</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="applyPrintPreset(2, 80)"
+                            class="click-effect px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">
+                            小标签
+                        </button>
+                        <button type="button" onclick="applyPrintPreset(3, 120)"
+                            class="click-effect px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors duration-200">
+                            标准
+                        </button>
+                        <button type="button" onclick="applyPrintPreset(4, 150)"
+                            class="click-effect px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors duration-200">
+                            大标签
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="printWidth" class="block text-xs text-gray-600 mb-1">宽度</label>
+                        <select id="printWidth"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="2">窄 (2)</option>
+                            <option value="3" selected>标准 (3)</option>
+                            <option value="4">宽 (4)</option>
+                            <option value="5">超宽 (5)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="printHeight" class="block text-xs text-gray-600 mb-1">高度</label>
+                        <select id="printHeight"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="80">矮 (80px)</option>
+                            <option value="100">标准 (100px)</option>
+                            <option value="120" selected>高 (120px)</option>
+                            <option value="150">超高 (150px)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 打印数量设置 -->
+            <div class="mb-4">
+                <label for="printQuantity"
+                    class="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-300">打印数量</label>
+                <div class="flex items-center space-x-3">
+                    <button type="button" onclick="adjustPrintQuantity(-1)"
+                        class="click-effect w-8 h-8 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors duration-200 flex items-center justify-center">
+                        -
+                    </button>                    <input type="number" id="printQuantity" value="1" min="1" max="1000"
+                        class="w-20 text-center px-2 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <button type="button" onclick="adjustPrintQuantity(1)"
+                        class="click-effect w-8 h-8 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition-colors duration-200 flex items-center justify-center">
+                        +
+                    </button>
+                    <span class="text-sm text-gray-600">份</span>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">将打印 <span id="quantityPreview">1</span> 个条形码 (智能布局)</div>
+            </div>            <!-- 打印布局预览 -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2 transition-colors duration-300">打印布局</label>
+                <div class="border border-gray-200 rounded-md p-3 bg-gray-50">
+                    <div class="flex items-center justify-center">
+                        <div id="layoutPreview" class="text-xs text-gray-600">
+                            单个条形码居中打印
+                        </div>
+                    </div>
+                    <!-- 小型预览 -->
+                    <div class="mt-2 flex justify-center">
+                        <canvas id="miniPreviewCanvas" width="120" height="40"
+                            class="border border-gray-300 bg-white"></canvas>
+                    </div>
+                    <!-- 布局提示 -->
+                    <div class="mt-2 text-xs text-gray-500 text-center">
+                        💡 小尺寸条形码将自动使用紧凑布局节省纸张
+                    </div>
+                </div>
+            </div>
+
+            <!-- 按钮组 -->
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closePrintModal()"
+                    class="click-effect px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors duration-200">
+                    取消
+                </button>
+                <button type="button" onclick="confirmPrint()"
+                    class="click-effect px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200">
+                    确认打印
+                </button>
+            </div>
+
+            <!-- 快捷键提示 -->
+            <div class="mt-3 pt-3 border-t border-gray-200">
+                <div class="text-xs text-gray-500 space-y-1">
+                    <div>• <kbd class="px-1 py-0.5 bg-gray-100 rounded text-xs">Enter</kbd> 确认打印</div>
+                    <div>• <kbd class="px-1 py-0.5 bg-gray-100 rounded text-xs">Esc</kbd> 关闭对话框</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/JsBarcode.all.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
